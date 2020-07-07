@@ -12,15 +12,23 @@ from datetime import datetime
 from spip.conf.defaults import *
 
 
-def update_source(git_url,source_path):
+def get_source_dir(url):
+   """ return the project directory were pip-source store the source code for url """
+   project_name=Path(url).name[0:-4]
+   return spip_root_path / Path(str(project_name) + "-env") / 'src' / project_name
+      
+
+
+
+def update_source(git_url ):
    """update source from source_dest if not found then clone it
    it updates the source by staching away your changes and doing a 
    rebass pull then reaply changes """
 
    # git rid of the .git on the end of the name
-   source_path =  source_path  / Path(git_url).name[:-4] 
+   source_path =  get_source_dir(git_url)  
    print( source_path )
-
+   
    if ( source_path.exists and  source_path.is_dir() ):
    
      # this file should git updated each time git is run we us the time modifyed to see
@@ -28,16 +36,20 @@ def update_source(git_url,source_path):
    
      gitfile_path =  Path( source_path  / '.git' / 'FETCH_HEAD')
      
+     
      #this was diificualt for me to write becuase of what python calls the epoc time   
      #wich was return from the  pathlib.stat.st_mtime
      #this is the  time of file last modifued from the epoc    
      
-     mod_time     = datetime.fromtimestamp(gitfile_path.stat().st_mtime) 
-     nsync_time   = datetime.fromtimestamp( mod_time.timestamp() + nsync_hours* 3600 + nsync_mins*60)  
+     #need for first pull does not exist until first pull
      current_time =  datetime.fromtimestamp( time.time())
+     nsync_time   = current_time
+     if(gitfile_path.is_file()):
+           mod_time     = datetime.fromtimestamp(gitfile_path.stat().st_mtime) 
+           nsync_time   = datetime.fromtimestamp( mod_time.timestamp() + nsync_hours* 3600 + nsync_mins*60)  
     
     
-     if(nsync_time < current_time ):
+     if(nsync_time < current_time or not gitfile_path.is_file() ):
         try:
             subprocess.check_call(["git", "stash"],cwd = str( source_path ) )
             subprocess.check_call(["git", "pull", "--rebase","origin","master"],cwd = str( source_path ) )
@@ -52,17 +64,23 @@ def update_source(git_url,source_path):
         print ( 'Next sync in {} hours {} minutes and {} seconds'.format(int(hours), int(mins), seconds) )
         return False
    else:
+ 
       print("cloning url :",git_url)
+      return
       subprocess.check_call(["git","clone",git_url, str(source_path) ])
 
 
    return True
+def git_remote_origan_url():
+     """ return the remote url of origan of the active project"""  
+     return subprocess.check_output(["git" ,"remote",  "get-url","origin"]).decode("utf-8").strip()  
+
 
 def git_remote_fork_url():
      """return the name of the Automaticlay created remote url"""
-     clone_url = subprocess.check_output(["git" ,"remote",  "get-url","origin"]).decode("utf-8")  
+     clone_url = git_remote_origan_url() 
      url = urlparse(clone_url)
-     username =  subprocess.check_output(["git" ,"config",  "user.name"]).decode("utf-8")
+     username =  subprocess.check_output(["git" ,"config",  "user.name"]).decode("utf-8").strip()
      username = username.strip()
      
      fork_path = username +"/" + Path(url.path).name
@@ -100,7 +118,6 @@ def get_current_branch():
       mybranches  = subprocess.check_output(["git" ,"branch"]).decode("utf-8")
       for branch in mybranches.splitlines():
           if("*" in branch):
-               print(branch)
                return branch[1:].strip() 
 
 
