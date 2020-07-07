@@ -14,7 +14,6 @@ def exe():
           subprocess.check_call(["git", "commit","-a" ])
       except:
            print("failed to commit maybe already comitted")
-      subprocess.check_call(["git", "commit","-a" ])
 
       subprocess.check_call(["git", "push","mypipfork",gittool.get_current_branch() ])
 
