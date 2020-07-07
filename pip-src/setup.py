@@ -8,10 +8,10 @@ from setuptools import find_packages, setup
 
 
 setup(
-    name="fedp",
+    name="pip-src",
     version="1.0",
-    description="The Freindly Extention to Delvopment Python",
-    long_description="Tools to help Delvopment and test version of Pip",
+    description="The sourecode manger tool for pip using cvs(just git at the moment)",
+    long_description="The sourecode manger tool for pip using cvs(just git at the moment)",
 
     license='MIT',
     classifiers=[
@@ -30,16 +30,14 @@ setup(
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
-    url='https://pip.pypa.io/',
+    url='https://github.frogo.pip/',
     keywords='distutils easy_install egg setuptools wheel virtualenv pip',
     project_urls={
         "Documentation": "https://pip.pypa.io",
-        "Source": "https://github.com/pypa/pip",
-        "Changelog": "https://pip.pypa.io/en/stable/news/",
+        "Source": "https://github.com/frog-o/pip",
     },
 
-    author='The pip developers and frog-o',
-    author_email='pypa-dev@groups.google.com',
+    author='frog-o',
 
     package_dir={"": "src"},
     packages=find_packages(
@@ -55,7 +53,7 @@ setup(
     #},
     entry_points={
         "console_scripts": [
-            "dpip=fedp.cli.main:main",
+            "spip =spip.cli.main:main",
             #"pip{}=pip._internal.cli.main:main".format(sys.version_info[0]),
             #"pip{}.{}=pip._internal.cli.main:main".format(
             #    *sys.version_info[:2]
@@ -64,5 +62,6 @@ setup(
     },
 
     zip_safe=False,
+    install_requires=['venvctrl==0.4.2'],
     python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*',
 )
