@@ -7,6 +7,7 @@ if MYPY_CHECK_RUNNING:
 
     from pip._vendor.packaging.version import _BaseVersion
 
+    from pip._internal.models.link import Link
     from pip._internal.req.req_install import InstallRequirement
 
     CandidateLookup = Tuple[
@@ -37,6 +38,10 @@ class Requirement(object):
         # type: () -> CandidateLookup
         raise NotImplementedError("Subclass should override")
 
+    def format_for_error(self):
+        # type: () -> str
+        raise NotImplementedError("Subclass should override")
+
 
 class Candidate(object):
     @property
@@ -54,10 +59,24 @@ class Candidate(object):
         # type: () -> bool
         raise NotImplementedError("Override in subclass")
 
+    @property
+    def is_editable(self):
+        # type: () -> bool
+        raise NotImplementedError("Override in subclass")
+
+    @property
+    def source_link(self):
+        # type: () -> Optional[Link]
+        raise NotImplementedError("Override in subclass")
+
     def iter_dependencies(self):
-        # type: () -> Iterable[Requirement]
+        # type: () -> Iterable[Optional[Requirement]]
         raise NotImplementedError("Override in subclass")
 
     def get_install_requirement(self):
         # type: () -> Optional[InstallRequirement]
         raise NotImplementedError("Override in subclass")
+
+    def format_for_error(self):
+        # type: () -> str
+        raise NotImplementedError("Subclass should override")
