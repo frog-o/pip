@@ -18,7 +18,7 @@ def exe():
       except:
            print("failed to commit maybe already comitted")
       print("pushing branch:" +  gittool.get_current_branch()+"to user fork")
-      subprocess.check_call(["git", "push","mypipfork",gittool.get_current_branch() ])
+      subprocess.check_call(["git", "push","-f", "mypipfork",gittool.get_current_branch() ])
       
 
       
