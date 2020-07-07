@@ -98,8 +98,9 @@ Return The project_root
 def get_current_branch():
       """ return the name of currently active branch """ 
       mybranches  = subprocess.check_output(["git" ,"branch"]).decode("utf-8")
-      for branch in mybranches:
+      for branch in mybranches.splitlines():
           if("*" in branch):
+               print(branch)
                return branch[1:].strip() 
 
 
