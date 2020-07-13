@@ -125,12 +125,12 @@ def add_user_fork():
 #    for project_root in Path(project_path).rglob('**/setup.py'):
 #        return str(project_root)[:-9]
 #    return project_path
-#def get_current_branch():
-#      """ return the name of currently active branch """ 
-#      mybranches  = subprocess.check_output(["git" ,"branch"]).decode("utf-8")
-#      for branch in mybranches.splitlines():
-#          if("*" in branch):
-#               return branch[1:].strip() 
+def get_current_branch():
+      """ return the name of currently active branch """ 
+      mybranches  = subprocess.check_output(["git" ,"branch"]).decode("utf-8")
+      for branch in mybranches.splitlines():
+          if("*" in branch):
+               return branch[1:].strip() 
 
 
 
