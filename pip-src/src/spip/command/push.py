@@ -3,6 +3,7 @@ import sys
 import click
 from pathlib import Path
 from spip.cvs import gittool
+from spip.project import create_project
 
 from spip.conf.defaults import *
 
@@ -10,8 +11,11 @@ from spip.conf.defaults import *
 def exe():
       """ pushes the source code for program back to github """
       gittool.add_user_fork()
-      gittool.update_source(gittool.git_remote_origan_url())
-      print(gittool.git_remote_origan_url())
+      #url = gittool.git_remote_origan_url())
+      #proj = create_project
+
+      #print(url)
+     
       try:
           subprocess.check_call(["git", "commit","-a" ])
           

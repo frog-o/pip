@@ -1,9 +1,8 @@
 import subprocess
 import sys
 import click
-from spip.command import install,push
+from spip.command import install,push,go
 from pathlib import Path
-from spip.cvs import gittool
 from spip.conf.defaults import *
 
 	
@@ -29,3 +28,5 @@ Return The project_root
 
 main.add_command(install.exe)
 main.add_command(push.exe)
+main.add_command(go.exe)
+

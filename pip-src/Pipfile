@@ -9,6 +9,7 @@ pre-commit = "*"
 [packages]
 click = "*"
 pipenv = "*"
+virtualenv-api = "*"
 
 [requires]
 python_version = "3.6"
